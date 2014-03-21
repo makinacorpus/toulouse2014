@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Élections municipales 2014 à Toulouse</title>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.3/leaflet.ie.css" />
+  <![endif]-->
+
+  <style>
+
+    html, body {
+      height:100%;
+      font-family: 'Cabin', sans-serif;
+      margin:0;
+    }
+
+    body {
+      width: 90%;
+      padding-left:5%;
+    }
+
+    h1 {
+      margin:0;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    #map {
+      width: 100%;
+      height: 80%;
+    }
+
+    .info {
+      padding: 6px 8px;
+      font-family: 'Cabin', sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .legend {
+      text-align: left;
+      line-height: 18px;
+      color: #555;
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Élections municipales 2014 à Toulouse</h1>
+  
+  <div id="map"></div>
+  <div id="legend">fffff</div>
+
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script type="text/javascript" src="bureaux.geojson"></script>
+  <script type="text/javascript" src="connections.js"></script>
+  <script type="text/javascript">
+
+    var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
+
+    var map = L.map('map', {maxZoom: 14}).setView([43.6, 1.45], 12);
+    // Don't show the 'Powered by Leaflet' text 
+    map.attributionControl.setPrefix(osmAttrib);
+
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(this.map)
+
+    var bureauxStyle = {
+      color: "grey",
+      weight: 1,
+      opacity: 1,
+      fillColor: "white",
+      fillOpacity: 0.5
+    };
+
+
+    function highlightFeature(e) {
+      var layer = e.target;
+      console.log(layer);
+      layer.setStyle({
+        weight: 3,
+      });
+    }
+
+    var geojson;
+
+    function resetHighlight(e) {
+      geojson.setStyle(bureauxStyle);
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+      });
+    }
+
+    geojson = L.geoJson(bureaux, {
+      style: bureauxStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+
+    var legend = L.control({position: 'topright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [1, 100, 1000, 10000, 100000, 1000000],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        div.innerHTML += 'Nodes contributed in other <br />countries by people mainly <br />mapping in the selected country<br />';
+
+        return div;
+    };
+
+    legend.addTo(map);
+
+
+  </script>
+</body>
+</html>
