@@ -73,7 +73,7 @@
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
 
-    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(this.map)
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
     var bureauxStyle = {
       color: "grey",
@@ -140,7 +140,6 @@
     };
 
     legend.addTo(map);
-
 
   </script>
 </body>
