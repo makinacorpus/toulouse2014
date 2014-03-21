@@ -34,7 +34,7 @@ if __name__ == '__main__':
         print(msg)
         exit()
 
-    offices = []
+    offices = {}
     with open(sys.argv[1], 'r') as csv_file:
 
         reader = csv.reader(csv_file, delimiter=',')
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                 key=lambda k: k.values(),
                 reverse=True)
 
-            offices.append({row.associant: results})
+            offices[row.associant] = results
 
     with open(sys.argv[2], 'w') as outfile:
         response_json = json.dump(offices, outfile)
