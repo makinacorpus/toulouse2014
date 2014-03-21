@@ -10,10 +10,6 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
 
-  <!--[if lte IE 8]>
-      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.3/leaflet.ie.css" />
-  <![endif]-->
-
   <style>
 
     html, body {
@@ -44,6 +40,7 @@
       background: white;
       background: rgba(255,255,255,0.8);
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      min-width: 200px;
     }
 
     .legend {
@@ -62,26 +59,58 @@
 </head>
 <body>
   <h1>Élections municipales 2014 à Toulouse</h1>
-  
+
   <div id="map"></div>
-  <div id="legend">fffff</div>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
-  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-
+  <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
   <script type="text/javascript">
+
+    var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
+
+    var map = L.map('map', {maxZoom: 14}).setView([43.6, 1.45], 12);
+    // Don't show the 'Powered by Leaflet' text 
+    map.attributionControl.setPrefix(osmAttrib);
+
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(this.map)
+
+    var bureauxStyle = {
+      color: "grey",
+      weight: 1,
+      opacity: 1,
+      fillColor: "white",
+      fillOpacity: 0.5
+    };
+
+    // get color depending on the candidate
+    function getColor(candidat) {
+      return candidat='belaubre' ? '#B88AE6' :
+             candidat='chouki' ? '#C40000' :
+             candidat='cohen' ? '#e20040' :
+             candidat='laroze' ? '#364B71' :
+             candidat='maurice' ? '#7AB41D' :
+             candidat='moudenc' ? '#4D6BA2' :
+             candidat='plancade' ? '#EEA2B0' :
+             candidat='sellin' ? '#FF0000' :
+             candidat='torremocha' ? '#9D0000' :
+             candidat='deveyrac' ? '#8297BE' :
+                        '#FFEDA0';
+    }
 
     function highlightFeature(e) {
       var layer = e.target;
-      console.log(layer);
+      legend.update(layer.feature.properties);
       layer.setStyle({
         weight: 3,
       });
     }
 
+    var geojson;
+
     function resetHighlight(e) {
       geojson.setStyle(bureauxStyle);
+      legend.update();
     }
 
     function onEachFeature(feature, layer) {
@@ -91,53 +120,27 @@
       });
     }
 
-    $(document).ready(function() {
+    geojson = L.geoJson(bureaux, {
+      style: bureauxStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
 
-      var url = 'https://github.com/makinacorpus/toulouse2014/blob/master/bureaux_vote_decoupage2014.json';
-      $.get(url, function(data) {
+    var legend = L.control({position: 'topright'});
 
-        var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
+    legend.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'legend info');
+      this.update();
+      return this._div;
+    };
 
-        var map = L.map('map', {maxZoom: 14}).setView([43.6, 1.45], 12);
-        // Don't show the 'Powered by Leaflet' text
-        map.attributionControl.setPrefix(osmAttrib);
+    legend.update = function (bureau) {
+      this._div.innerHTML = '<h4>Résultat du premier tour</h4>' +  (bureau ?
+        '<b>' + bureau.NOM + '</b><br />' + bureau.ASSOCIANT + ' people / mi<sup>2</sup>'
+        : 'Survolez un bureau de vote');
+    };
 
-        L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(this.map)
+    legend.addTo(map);
 
-        var bureauxStyle = {
-          color: "grey",
-          weight: 1,
-          opacity: 1,
-          fillColor: "white",
-          fillOpacity: 0.5
-        };
-
-        var geojson;
-
-        geojson = L.geoJson(bureaux, {
-          style: bureauxStyle,
-          onEachFeature: onEachFeature
-        }).addTo(map);
-
-        var legend = L.control({position: 'topright'});
-
-        legend.onAdd = function (map) {
-
-            var div = L.DomUtil.create('div', 'info legend'),
-                grades = [1, 100, 1000, 10000, 100000, 1000000],
-                labels = [];
-
-            // loop through our density intervals and generate a label with a colored square for each interval
-            div.innerHTML += 'Nodes contributed in other <br />countries by people mainly <br />mapping in the selected country<br />';
-
-            return div;
-        };
-
-        legend.addTo(map);
-
-      });
-
-    });
 
   </script>
 </body>
