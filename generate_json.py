@@ -44,8 +44,12 @@ if __name__ == '__main__':
         for row in map(OfficeResults._make, reader):
 
             # Get results for each political list
-            results = [{candidate: getattr(row, candidate)}
-                       for candidate in candidates]
+            results = sorted(
+                [{candidate: getattr(row, candidate)}
+                 for candidate in candidates],
+                key=lambda k: k.values(),
+                reverse=True)
+
             offices.append({row.associant: results})
 
     with open(sys.argv[2], 'w') as outfile:
