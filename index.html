@@ -75,6 +75,46 @@
 
     L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
+    // get color depending on the candidate
+    function getColor(candidat) {
+      console.log(candidat);
+      switch (candidat) {
+      case 'belaubre':
+        return '#B88AE6';
+      break;
+      case 'chouki':
+        return '#C40000';
+      break;
+      case 'cohen':
+        return '#e20040';
+      break;
+      case 'laroze':
+        return '#364B71';
+      break;
+      case 'maurice':
+        return '#7AB41D';
+      break;
+      case 'moudenc':
+        return '#4D6BA2';
+      break;
+      case 'plancade':
+        return '#EEA2B0';
+      break;
+      case 'sellin':
+        return '#FF0000';
+      break;
+      case 'torremocha':
+        return '#9D0000';
+      break;
+      case 'deveyrac':
+        return '#8297BE';
+      break;
+      default: 
+        return '#FFEDA0';
+      break;
+      }
+    }
+
     function bureauxStyle(feature) {
       return {
         color: "grey",
@@ -82,22 +122,7 @@
         opacity: 1,
         fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
         fillOpacity: 0.5
-      }
-    };
-
-    // get color depending on the candidate
-    function getColor(candidat) {
-      return candidat='belaubre' ? '#B88AE6' :
-             candidat='chouki' ? '#C40000' :
-             candidat='cohen' ? '#e20040' :
-             candidat='laroze' ? '#364B71' :
-             candidat='maurice' ? '#7AB41D' :
-             candidat='moudenc' ? '#4D6BA2' :
-             candidat='plancade' ? '#EEA2B0' :
-             candidat='sellin' ? '#FF0000' :
-             candidat='torremocha' ? '#9D0000' :
-             candidat='deveyrac' ? '#8297BE' :
-                        '#FFEDA0';
+      };
     }
 
     function highlightFeature(e) {
@@ -137,7 +162,7 @@
 
     legend.update = function (bureau) {
       this._div.innerHTML = '<h4>Résultat du premier tour</h4>' +  (bureau ?
-        '<b>' + bureau.NOM + '</b><br />' + bureau.ASSOCIANT + ' people / mi<sup>2</sup>'
+        '<b>' + bureau.NOM + '</b><br />' + bureau.ASSOCIANT 
         : 'Survolez un bureau de vote');
     };
 
