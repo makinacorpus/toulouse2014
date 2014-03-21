@@ -75,12 +75,14 @@
 
     L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
-    var bureauxStyle = {
-      color: "grey",
-      weight: 1,
-      opacity: 1,
-      fillColor: "white",
-      fillOpacity: 0.5
+    function bureauxStyle(feature) {
+      return {
+        color: "grey",
+        weight: 1,
+        opacity: 1,
+        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
+        fillOpacity: 0.5
+      }
     };
 
     // get color depending on the candidate
