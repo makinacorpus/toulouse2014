@@ -48,6 +48,15 @@
       line-height: 18px;
       color: #555;
     }
+
+    .legend ul {
+      padding-left: 0px;
+    }
+
+    .legend li {
+      list-style-type: none;
+    }
+
     .legend i {
       width: 18px;
       height: 18px;
@@ -141,7 +150,11 @@
         var resultsList = '<ul>';
         for(var key in results[bureau.ASSOCIANT]) {
           var value = results[bureau.ASSOCIANT][key];
-          resultsList += '<li>';
+          resultsList += '<li><canvas id="myCanvas" width="';
+          resultsList += value[Object.keys(value)]*2
+          resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
+          resultsList += colors[Object.keys(value)];
+          resultsList += '; opacity: 0.7;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
           resultsList += ' : ';
           resultsList += value[Object.keys(value)];
