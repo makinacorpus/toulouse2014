@@ -40,7 +40,7 @@
       background: white;
       background: rgba(255,255,255,0.8);
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      min-width: 200px;
+      min-width: 300px;
     }
 
     .legend {
@@ -63,6 +63,7 @@
   <div id="map"></div>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
   <script type="text/javascript">
@@ -76,43 +77,12 @@
     L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
     // get color depending on the candidate
+
+    var colors = {'belaubre': '#B88AE6', 'chouki': '#C40000', 'cohen': '#e20040', 'laroze': '#364B71', 'maurice': '#7AB41D', 'moudenc': '#4D6BA2', 'plancade': '#EEA2B0', 'sellin': '#FF0000', 'torremocha': '#9D0000', 'deveyrac': '#8297BE'};
+    var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
+
     function getColor(candidat) {
-      console.log(candidat);
-      switch (candidat) {
-      case 'belaubre':
-        return '#B88AE6';
-      break;
-      case 'chouki':
-        return '#C40000';
-      break;
-      case 'cohen':
-        return '#e20040';
-      break;
-      case 'laroze':
-        return '#364B71';
-      break;
-      case 'maurice':
-        return '#7AB41D';
-      break;
-      case 'moudenc':
-        return '#4D6BA2';
-      break;
-      case 'plancade':
-        return '#EEA2B0';
-      break;
-      case 'sellin':
-        return '#FF0000';
-      break;
-      case 'torremocha':
-        return '#9D0000';
-      break;
-      case 'deveyrac':
-        return '#8297BE';
-      break;
-      default: 
-        return '#FFEDA0';
-      break;
-      }
+      return colors[candidat];
     }
 
     function bureauxStyle(feature) {
@@ -121,7 +91,7 @@
         weight: 1,
         opacity: 1,
         fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
-        fillOpacity: 0.5
+        fillOpacity: 0.7
       };
     }
 
@@ -161,9 +131,21 @@
     };
 
     legend.update = function (bureau) {
-      this._div.innerHTML = '<h4>Résultat du premier tour</h4>' +  (bureau ?
-        '<b>' + bureau.NOM + '</b><br />' + bureau.ASSOCIANT 
-        : 'Survolez un bureau de vote');
+      if (bureau) {
+        var resultsList = '<ul>';
+        for(var key in results[bureau.ASSOCIANT]) {
+          var value = results[bureau.ASSOCIANT][key];
+          resultsList += '<li>';
+          resultsList += fullNames[Object.keys(value)];
+          resultsList += ' : ';
+          resultsList += value[Object.keys(value)];
+          resultsList += '%</li>';
+        };
+        resultsList += '<ul>';
+        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT + ')<br />' + resultsList;
+      } else{
+        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + 'Survolez un bureau de vote';
+      };
     };
 
     legend.addTo(map);
