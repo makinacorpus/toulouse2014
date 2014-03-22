@@ -161,7 +161,7 @@
           resultsList += '%</li>';
         };
         resultsList += '<ul>';
-        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT + ')<br />' + resultsList;
+        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
       } else{
         this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + 'Survolez un bureau de vote';
       };
