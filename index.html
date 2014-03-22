@@ -55,6 +55,11 @@
       margin-right: 8px;
       opacity: 1;
     }
+
+    .leaflet-tile {
+      filter: grayscale(0.8);
+      -webkit-filter: grayscale(0.8);
+    }
   </style>
 </head>
 <body>
@@ -63,7 +68,7 @@
   <div id="map"></div>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-  <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script>
+<!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
   <script type="text/javascript">
@@ -73,6 +78,7 @@
     var map = L.map('map', {maxZoom: 14}).setView([43.6, 1.45], 12);
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
+    map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
     L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
