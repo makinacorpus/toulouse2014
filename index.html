@@ -33,6 +33,35 @@
       height: 80%;
     }
 
+    #title {
+      position: absolute;
+    }
+
+    #logo {
+      float: right;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      width: 200px;
+    }
+
+    @media screen and (max-width: 840px) {
+      #title {
+        font-size: 1.5em;
+      }
+      #logo {
+        width: 150px;
+      }
+    }
+
+    @media screen and (max-width: 640px) {
+      #title {
+        font-size: 1em;
+      }
+      #logo {
+        width: 100px;
+      }
+    }
+
     .info {
       padding: 6px 8px;
       font-family: 'Cabin', sans-serif;
@@ -71,8 +100,10 @@
   </style>
 </head>
 <body>
-  <h1>Élections municipales 2014 à Toulouse</h1>
-
+  <div id="header">
+    <h1 id="title">Élections municipales 2014 à Toulouse</h1>
+    <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
+  </div>
   <div id="map"></div>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
