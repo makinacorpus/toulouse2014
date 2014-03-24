@@ -119,7 +119,7 @@
       }
       .info {
         font-size: 0.8em;
-        min-width: 230px;
+        min-width: 0px;
       }
     }
   </style>
@@ -171,7 +171,7 @@
         weight: 1,
         opacity: 1,
         fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
-        fillOpacity: 0.7
+        fillOpacity: 0.6
       };
     }
 
@@ -220,7 +220,7 @@
           resultsList += value[Object.keys(value)]*2;
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
-          resultsList += '; opacity: 0.7;"></canvas> ';
+          resultsList += '; opacity: 0.6;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
           resultsList += ' : ';
           resultsList += value[Object.keys(value)];
@@ -236,7 +236,7 @@
           resultsList += value[Object.keys(value)]*2;
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
-          resultsList += '; opacity: 0.7;"></canvas> ';
+          resultsList += '; opacity: 0.6;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
           resultsList += ' : ';
           resultsList += value[Object.keys(value)];
