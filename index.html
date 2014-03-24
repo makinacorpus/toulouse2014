@@ -56,7 +56,7 @@
       background: white;
       background: rgba(255,255,255,0.8);
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      min-width: 250px;
+      min-width: 390px;
     }
 
     .legend {
@@ -96,6 +96,12 @@
       #footer {
         font-size: 0.8em;
       }
+      .parti {
+        display: none;
+      }
+      .info {
+        min-width: 250px;
+      }
     }
 
     @media screen and (max-width: 780px) {
@@ -133,7 +139,7 @@
   <div id="map"></div>
   <div id="footer">
     N'hésitez pas à nous contacter pour votre ville ou pour d'autres projets : <a href="mailto:sig@makina-corpus.com">sig@makina-corpus.com</a>
-  </div>
+  </div>serie
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
@@ -160,6 +166,7 @@
 
     var colors = {'belaubre': '#B6A3C9', 'chouki': '#C40000', 'cohen': '#e20040', 'laroze': '#1B2638', 'maurice': '#7AB41D', 'moudenc': '#4D6BA2', 'plancade': '#EEA2B0', 'sellin': '#FF0000', 'torremocha': '#9D0000', 'deveyrac': '#8297BE'};
     var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
+    var partis = {'belaubre': 'Cap21', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
 
     function getColor(candidat) {
       return colors[candidat];
@@ -221,7 +228,7 @@
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.6;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
-          resultsList += ' : ';
+          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
           resultsList += '%</li>';
         };
@@ -237,7 +244,7 @@
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.6;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
-          resultsList += ' : ';
+          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
           resultsList += '%</li>';
         };
