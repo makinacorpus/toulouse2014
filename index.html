@@ -33,9 +33,6 @@
       height: 80%;
     }
 
-    #title {
-    }
-
     #logo {
       float: right;
       padding-top: 5px;
@@ -43,9 +40,22 @@
       width: 200px;
     }
 
+    #title2 {
+      margin: 0;
+    }
+
+    #footer {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 1.2em;
+    }
+
     @media screen and (max-width: 840px) {
       #title {
         font-size: 1.5em;
+      }
+      #title2 {
+        font-size: 1.2em;
       }
       #logo {
         width: 150px;
@@ -55,6 +65,9 @@
     @media screen and (max-width: 640px) {
       #title {
         font-size: 1em;
+      }
+      #title2 {
+        font-size: 0.7em;
       }
       #logo {
         width: 100px;
@@ -106,8 +119,12 @@
   <div id="header">
     <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
     <h1 id="title">Élections municipales 2014 à Toulouse</h1>
+    <h3 id="title2">Découpage par bureaux de vote</h3>
   </div>
   <div id="map"></div>
+  <div id="footer">
+    N'hésitez pas à nous contacter pour votre ville ou pour d'autres projets : <a href="mailto:sig@makina-corpus.com">sig@makina-corpus.com</a>
+  </div>
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
@@ -118,7 +135,7 @@
 
     var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
 
-    var map = L.map('map', {maxZoom: 14}).setView([43.6, 1.45], 12);
+    var map = L.map('map', {maxZoom: 14, minZoom: 11}).setView([43.6, 1.45], 12);
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
@@ -189,7 +206,7 @@
         for(var key in results[bureau.ASSOCIANT]) {
           var value = results[bureau.ASSOCIANT][key];
           resultsList += '<li><canvas id="myCanvas" width="';
-          resultsList += value[Object.keys(value)]*2
+          resultsList += value[Object.keys(value)]*2;
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.7;"></canvas> ';
@@ -201,7 +218,7 @@
         resultsList += '<ul>';
         this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
       } else{
-        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + 'Survolez un bureau de vote';
+        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + 'Survolez un bureau de vote pour ';
       };
     };
 
