@@ -131,6 +131,7 @@
   <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
+  <script type="text/javascript" src="resultatsG1.json"></script>
   <script type="text/javascript">
 
     var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
@@ -203,6 +204,7 @@
     legend.update = function (bureau) {
       if (bureau) {
         var resultsList = '<ul>';
+        console.log(results[bureau.ASSOCIANT]);
         for(var key in results[bureau.ASSOCIANT]) {
           var value = results[bureau.ASSOCIANT][key];
           resultsList += '<li><canvas id="myCanvas" width="';
@@ -218,7 +220,21 @@
         resultsList += '<ul>';
         this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
       } else{
-        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + 'Survolez un bureau de vote pour ';
+        var resultsList = '<ul>';
+        for(var key in resultsG1) {
+          var value = resultsG1[key];
+          resultsList += '<li><canvas id="myCanvas" width="';
+          resultsList += value[Object.keys(value)]*2;
+          resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
+          resultsList += colors[Object.keys(value)];
+          resultsList += '; opacity: 0.7;"></canvas> ';
+          resultsList += fullNames[Object.keys(value)];
+          resultsList += ' : ';
+          resultsList += value[Object.keys(value)];
+          resultsList += '%</li>';
+        };
+        resultsList += '<ul>';
+        this._div.innerHTML = '<h2>Résultat du premier tour</h2><h3>Résultats généraux</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
       };
     };
 
