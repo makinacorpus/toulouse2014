@@ -50,6 +50,33 @@
       font-size: 1.2em;
     }
 
+    .info {
+      padding: 6px 8px;
+      font-family: 'Cabin', sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      min-width: 250px;
+    }
+
+    .legend {
+      text-align: left;
+      line-height: 18px;
+      color: #555;
+    }
+
+    .legend ul {
+      padding-left: 0px;
+    }
+
+    .legend li {
+      list-style-type: none;
+    }
+
+    .leaflet-bar a.leaflet-control-touchhover-toggled {
+      background: #888;
+    }
+
     @media screen and (max-width: 1080px) {
       #title2 {
         font-size: 1em;
@@ -90,41 +117,10 @@
       #title {
         font-size: 1.2em;
       }
-    }
-
-    .info {
-      padding: 6px 8px;
-      font-family: 'Cabin', sans-serif;
-      background: white;
-      background: rgba(255,255,255,0.8);
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      min-width: 250px;
-    }
-
-    .legend {
-      text-align: left;
-      line-height: 18px;
-      color: #555;
-    }
-
-    .legend ul {
-      padding-left: 0px;
-    }
-
-    .legend li {
-      list-style-type: none;
-    }
-
-    .legend i {
-      width: 18px;
-      height: 18px;
-      float: left;
-      margin-right: 8px;
-      opacity: 1;
-    }
-
-    .leaflet-bar a.leaflet-control-touchhover-toggled {
-      background: #888;
+      .info {
+        font-size: 0.8em;
+        min-width: 230px;
+      }
     }
   </style>
 </head>
@@ -149,7 +145,7 @@
 
     var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a>';
 
-    var map = L.map('map', {maxZoom: 14, minZoom: 11}).setView([43.6, 1.45], 12);
+    var map = L.map('map', {maxZoom: 17, minZoom: 11}).setView([43.6, 1.45], 12);
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
