@@ -18,8 +18,8 @@
     }
 
     body {
-      width: 90%;
-      padding-left:5%;
+      width: 98%;
+      padding-left:1%;
     }
 
     h1 {
@@ -50,12 +50,18 @@
       font-size: 1.2em;
     }
 
-    @media screen and (max-width: 840px) {
+    @media screen and (max-width: 1080px) {
+      #title2 {
+        font-size: 1em;
+      }
+    }
+
+    @media screen and (max-width: 980px) {
       #title {
         font-size: 1.5em;
       }
       #title2 {
-        font-size: 1.2em;
+        font-size: 0.8em;
       }
       #logo {
         width: 150px;
@@ -65,15 +71,24 @@
       }
     }
 
-    @media screen and (max-width: 640px) {
+    @media screen and (max-width: 780px) {
       #title {
-        font-size: 1em;
+        font-size: 1.4em;
       }
       #title2 {
         font-size: 0.7em;
       }
-      #logo {
-        width: 100px;
+      #footer {
+        display: none;
+      }
+      #map {
+        height: 83%;
+      }
+    }
+
+    @media screen and (max-width: 680px) {
+      #title {
+        font-size: 1.2em;
       }
     }
 
@@ -83,7 +98,7 @@
       background: white;
       background: rgba(255,255,255,0.8);
       box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      min-width: 300px;
+      min-width: 250px;
     }
 
     .legend {
@@ -108,11 +123,6 @@
       opacity: 1;
     }
 
-    .leaflet-tile {
-      filter: grayscale(0.8);
-      -webkit-filter: grayscale(0.8);
-    }
-
     .leaflet-bar a.leaflet-control-touchhover-toggled {
       background: #888;
     }
@@ -121,8 +131,8 @@
 <body>
   <div id="header">
     <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
-    <h1 id="title">Élections municipales 2014 à Toulouse</h1>
-    <h3 id="title2">Découpage par bureaux de vote</h3>
+    <h1 id="title">Élections municipales 2014 à Toulouse - Premier tour</h1>
+    <h3 id="title2">La couleur affichée est celle du candidat ayant remporté la majorité des suffrages dans ce bureau de vote.</h3>
   </div>
   <div id="map"></div>
   <div id="footer">
@@ -144,7 +154,7 @@
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
-    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
     if (L.Browser.touch) {
       L.control.touchHover().addTo(map);
@@ -221,7 +231,7 @@
           resultsList += '%</li>';
         };
         resultsList += '<ul>';
-        this._div.innerHTML = '<h2>Résultat du premier tour</h2>' + '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
+        this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
       } else{
         var resultsList = '<ul>';
         for(var key in resultsG1) {
@@ -237,7 +247,7 @@
           resultsList += '%</li>';
         };
         resultsList += '<ul>';
-        this._div.innerHTML = '<h2>Résultat du premier tour</h2><h3>Résultats généraux</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+        this._div.innerHTML = '<h3>Résultats à Toulouse</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
       };
     };
 
