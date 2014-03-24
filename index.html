@@ -34,7 +34,6 @@
     }
 
     #title {
-      position: absolute;
     }
 
     #logo {
@@ -97,7 +96,7 @@
       filter: grayscale(0.8);
       -webkit-filter: grayscale(0.8);
     }
-    
+
     .leaflet-bar a.leaflet-control-touchhover-toggled {
       background: #888;
     }
@@ -105,8 +104,8 @@
 </head>
 <body>
   <div id="header">
-    <h1 id="title">Élections municipales 2014 à Toulouse</h1>
     <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
+    <h1 id="title">Élections municipales 2014 à Toulouse</h1>
   </div>
   <div id="map"></div>
 
@@ -141,7 +140,7 @@
 
     function bureauxStyle(feature) {
       return {
-        color: "grey",
+        color: "lightgrey",
         weight: 1,
         opacity: 1,
         fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
@@ -153,7 +152,7 @@
       var layer = e.target;
       legend.update(layer.feature.properties);
       layer.setStyle({
-        weight: 3,
+        weight: 4,
       });
     }
 
