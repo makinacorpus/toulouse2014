@@ -108,6 +108,7 @@
 
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
+  <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
   <script type="text/javascript">
@@ -120,6 +121,10 @@
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
     L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/osmlight-france/{z}/{x}/{y}.png",{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
+
+    if (L.Browser.touch) {
+      L.control.touchHover().addTo(map);
+    }
 
     // get color depending on the candidate
 
