@@ -47,7 +47,7 @@ if __name__ == '__main__':
             results = sorted(
                 [{candidate: getattr(row, candidate)}
                  for candidate in candidates],
-                key=lambda k: k.values(),
+                key=lambda k: int(k.values()[0]),
                 reverse=True)
 
             offices[row.associant] = results
