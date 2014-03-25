@@ -168,8 +168,12 @@
     var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
     var partis = {'belaubre': 'Cap21', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
 
-    function getColor(candidat) {
-      return colors[candidat];
+    function getColor(candidat, score1, score2) {
+      if (score1 == score2) {
+        return 'white';
+      } else{
+        return colors[candidat];
+      };
     }
 
     function bureauxStyle(feature) {
@@ -177,7 +181,7 @@
         color: "lightgrey",
         weight: 1,
         opacity: 1,
-        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0]),
+        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]], results[feature.properties.ASSOCIANT][1][Object.keys(results[feature.properties.ASSOCIANT][1])[0]]),
         fillOpacity: 0.6
       };
     }
