@@ -1,4 +1,4 @@
-opyright (c) 2014
+Copyright (c) 2014
 Makina Corpus <contact@makina-corpus.com>
 All rights reserved.
 
