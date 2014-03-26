@@ -149,14 +149,14 @@
   <script type="text/javascript" src="resultatsG1.json"></script>
   <script type="text/javascript">
 
-    var osmAttrib='Par <a href="http://www.makina-corpus.com">Makina Corpus</a> | <a href="https://github.com/makinacorpus/toulouse2014/tree/gh-pages">Code</a> | <a href="http://rbv.toulouse.fr/resultats/resultats.php">Données électorales</a> | <a href="http://data.toulouse-metropole.fr/les-donnees/-/opendata/card/24401-bureaux-de-vote-decoupage-effectif-au-1er-mars-2014">Découpage</a>';
+    var osmAttrib='Par <a href="http://www.makina-corpus.com" target="_blank">Makina Corpus</a> | <a href="https://github.com/makinacorpus/toulouse2014/tree/gh-pages" target="_blank">Code</a> | <a href="http://rbv.toulouse.fr/resultats/resultats.php" target="_blank">Données électorales</a> | <a href="http://data.toulouse-metropole.fr/les-donnees/-/opendata/card/24401-bureaux-de-vote-decoupage-effectif-au-1er-mars-2014" target="_blank">Découpage</a>';
 
     var map = L.map('map', {maxZoom: 17, minZoom: 11}).setView([43.6, 1.45], 12);
     // Don't show the 'Powered by Leaflet' text 
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
-    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright">OpenStreetMap</a>'}).addTo(map)
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
 
     if (L.Browser.touch) {
       L.control.touchHover().addTo(map);
