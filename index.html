@@ -117,6 +117,28 @@
       #map {
         height: 83%;
       }
+      .bar {
+        height: 15px;
+      }
+      h3 {
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
+      .leaflet-top .leaflet-control {
+        margin-top: 5px;
+      }
+      .leaflet-bottom .leaflet-control {
+        margin-bottom: 5px;
+      }
+      .leaflet-left .leaflet-control {
+        margin-left: 5px;
+      }
+      .leaflet-right .leaflet-control {
+        margin-right: 5px;
+      }
+      .legend ul {
+        margin: 0;
+      }
     }
 
     @media screen and (max-width: 680px) {
@@ -226,7 +248,7 @@
         var resultsList = '<ul>';
         for(var key in results[bureau.ASSOCIANT]) {
           var value = results[bureau.ASSOCIANT][key];
-          resultsList += '<li><canvas id="myCanvas" width="';
+          resultsList += '<li><canvas class="bar" width="';
           resultsList += value[Object.keys(value)]*2;
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
@@ -242,7 +264,7 @@
         var resultsList = '<ul>';
         for(var key in resultsG1) {
           var value = resultsG1[key];
-          resultsList += '<li><canvas id="myCanvas" width="';
+          resultsList += '<li><canvas class="bar" width="';
           resultsList += value[Object.keys(value)]*2;
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
