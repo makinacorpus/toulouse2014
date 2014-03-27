@@ -27,6 +27,12 @@
       padding-top: 10px;
       padding-bottom: 10px;
     }
+    h3 {
+      display: inline;
+    }
+    select {
+      font-family: 'Cabin', sans-serif;
+    }
 
     #map {
       width: 100%;
@@ -157,6 +163,7 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="Control.TouchHover.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/chroma-js/0.5.2/chroma.min.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
   <script type="text/javascript" src="resultatsG1.json"></script>
@@ -201,16 +208,10 @@
     var maxScores = {'belaubre': '5.03', 'chouki': '21.40', 'cohen': '46.94', 'laroze': '18.03', 'maurice': '15.11', 'moudenc': '62.34', 'plancade': '4.79', 'sellin': '10.29', 'torremocha': '2.48', 'deveyrac': '5.65'};
     var minScores = {'belaubre': '0.59', 'chouki': '0.20', 'cohen': '17.32', 'laroze': '2.47', 'maurice': '1.61', 'moudenc': '19.50', 'plancade': '0.59', 'sellin': '1.23', 'torremocha': '0', 'deveyrac': '0.48'};
 
-    function getColor(candidat, score1, score2) {
-      if (score1 && score2 && score1 == score2) {
-        return 'white';
-      } else{
-        return colors[candidat];
-      };
-    }
-
-    function getOpacity(candidat, score) {
-      return ((score - minScores[candidat]) / (maxScores[candidat] - minScores[candidat]));
+    function getColor(candidat, rate) {
+      scale = chroma.scale(['white', chroma(colors[candidat]).saturate(50)]);
+      var color = scale(rate).darken(rate*20).hex();
+      return color;
     }
 
     function getScale(candidat, scale) {
@@ -218,12 +219,14 @@
     }
 
     function bureauxStyle(feature) {
+      var candidat = Object.keys(results[feature.properties.ASSOCIANT][0])[0];
+      var rate = results[feature.properties.ASSOCIANT][0][candidat]/maxScores[candidat]
       return {
         color: "lightgrey",
         weight: 1,
         opacity: 1,
-        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]], 10000),
-        fillOpacity: getOpacity(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]])
+        fillColor: getColor(candidat, rate),
+        fillOpacity: 0.5,
       };
     }
 
@@ -264,11 +267,11 @@
 
     legend.update = function (bureau) {
       var scales = "";
-      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.1;"></canvas> '+getScale(current_candidat, 0)+' à '+getScale(current_candidat, 0.2)+' %</li>';
-      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.3;"></canvas> '+getScale(current_candidat, 0.2)+' à '+getScale(current_candidat, 0.4)+' %</li>';
-      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.5;"></canvas> '+getScale(current_candidat, 0.4)+' à '+getScale(current_candidat, 0.6)+' %</li>';
-      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.7;"></canvas> '+getScale(current_candidat, 0.6)+' à '+getScale(current_candidat, 0.8)+' %</li>';
-      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.9;"></canvas> '+getScale(current_candidat, 0.8)+' à '+getScale(current_candidat, 1)+' %</li>';
+      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat, 0.1)+'; opacity: 0.5"></canvas> '+getScale(current_candidat, 0)+' à '+getScale(current_candidat, 0.2)+' %</li>';
+      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat, 0.3)+'; opacity: 0.5"></canvas> '+getScale(current_candidat, 0.2)+' à '+getScale(current_candidat, 0.4)+' %</li>';
+      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat, 0.5)+'; opacity: 0.5"></canvas> '+getScale(current_candidat, 0.4)+' à '+getScale(current_candidat, 0.6)+' %</li>';
+      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat, 0.7)+'; opacity: 0.5"></canvas> '+getScale(current_candidat, 0.6)+' à '+getScale(current_candidat, 0.8)+' %</li>';
+      scales += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat, 0.9)+'; opacity: 0.5"></canvas> '+getScale(current_candidat, 0.8)+' à '+getScale(current_candidat, 1)+' %</li>';
       if (bureau) {
         var resultsList = '<ul>';
         resultsList += scales;
@@ -276,9 +279,9 @@
           var value = results[bureau.ASSOCIANT][key];
           resultsList += '<li><canvas id="myCanvas" width="';
           resultsList += value[Object.keys(value)]*2;
-          resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat) + '; background-color:';
-          resultsList += getColor(current_candidat);
-          resultsList += '; opacity: 0.6;"></canvas> ';
+          resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat, 1) + '; background-color:';
+          resultsList += getColor(current_candidat, 1);
+          resultsList += '; opacity: 0.5;"></canvas> ';
           resultsList += fullNames[Object.keys(value)];
           resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
@@ -294,9 +297,9 @@
           if (Object.keys(value) == current_candidat) {
             resultsList += '<li><canvas id="myCanvas" width="';
             resultsList += value[Object.keys(value)]*2;
-            resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat) + '; background-color:';
-            resultsList += getColor(current_candidat);
-            resultsList += '; opacity: 0.6;"></canvas> ';
+            resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat, 1) + '; background-color:';
+            resultsList += getColor(current_candidat, 1);
+            resultsList += '; opacity: 0.5;"></canvas> ';
             resultsList += fullNames[Object.keys(value)];
             resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
             resultsList += value[Object.keys(value)];
@@ -309,8 +312,6 @@
     };
 
     legend.addTo(map);
-
-    var select = document.getElementById("select-candidate");
 
   </script>
 </body>
