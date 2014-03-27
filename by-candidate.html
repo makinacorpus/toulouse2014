@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Élections municipales 2014 à Toulouse</title>
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+
+  <style>
+
+    html, body {
+      height:100%;
+      font-family: 'Cabin', sans-serif;
+      margin:0;
+    }
+
+    body {
+      width: 98%;
+      padding-left:1%;
+    }
+
+    h1 {
+      margin:0;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    #map {
+      width: 100%;
+      height: 80%;
+    }
+
+    #logo {
+      float: right;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      width: 200px;
+    }
+
+    #title2 {
+      margin: 0;
+    }
+
+    #footer {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      font-size: 1.2em;
+    }
+
+    .info {
+      padding: 6px 8px;
+      font-family: 'Cabin', sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      min-width: 250px;
+    }
+
+    .legend {
+      text-align: left;
+      line-height: 18px;
+      color: #555;
+    }
+
+    .legend ul {
+      padding-left: 0px;
+    }
+
+    .legend li {
+      list-style-type: none;
+    }
+
+    .leaflet-bar a.leaflet-control-touchhover-toggled {
+      background: #888;
+    }
+
+    @media screen and (max-width: 1080px) {
+      #title2 {
+        font-size: 1em;
+      }
+    }
+
+    @media screen and (max-width: 980px) {
+      #title {
+        font-size: 1.5em;
+      }
+      #title2 {
+        font-size: 0.8em;
+      }
+      #logo {
+        width: 150px;
+      }
+      #footer {
+        font-size: 0.8em;
+      }
+      .parti {
+        display: none;
+      }
+      .info {
+        min-width: 250px;
+      }
+    }
+
+    @media screen and (max-width: 780px) {
+      #title {
+        font-size: 1.4em;
+      }
+      #title2 {
+        font-size: 0.7em;
+      }
+      #footer {
+        display: none;
+      }
+      #map {
+        height: 83%;
+      }
+    }
+
+    @media screen and (max-width: 680px) {
+      #title {
+        font-size: 1.2em;
+      }
+      .info {
+        font-size: 0.8em;
+        min-width: 0px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
+    <h1 id="title">Élections municipales 2014 à Toulouse - Premier tour</h1>
+    <h3 id="title2">Résultats par bureau de vote - la nuance dépend du pourcentage de votes.</h3>
+    <select id="select-candidate" onchange="location.href='#'+this.value;location.reload();">
+      <option value="">Choisir un candidat</option>
+      <option value="belaubre">Elisabeth Belaubre</option>
+      <option value="chouki">Ahmed Chouki</option>
+      <option value="cohen">Pierre Cohen</option>
+      <option value="laroze">Serge Laroze</option>
+      <option value="maurice">Antoine Maurice</option>
+      <option value="moudenc">Jean-Luc Moudenc</option>
+      <option value="plancade">Jean-Pierre Plancade</option>
+      <option value="sellin">Jean-Christophe Sellin</option>
+      <option value="torremocha">Sandra Torremocha</option>
+      <option value="deveyrac">Christine de Veyrac</option>
+    </select>
+  </div>
+  <div id="map"></div>
+  <div id="footer">
+    N'hésitez pas à nous contacter pour d'autres projets : <a href="mailto:sig@makina-corpus.com">sig@makina-corpus.com</a>
+  </div>
+
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+<!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
+  <script type="text/javascript" src="Control.TouchHover.js"></script>
+  <script type="text/javascript" src="bureaux.geojson"></script>
+  <script type="text/javascript" src="bureaux_vote_decoupage2014.json"></script>
+  <script type="text/javascript" src="resultatsG1.json"></script>
+  <script type="text/javascript">
+
+    var osmAttrib='Par <a href="http://www.makina-corpus.com" target="_blank">Makina Corpus</a> | <a href="http://rbv.toulouse.fr/resultats/resultats.php" target="_blank">Données électorales</a> | <a href="http://data.toulouse-metropole.fr/les-donnees/-/opendata/card/24401-bureaux-de-vote-decoupage-effectif-au-1er-mars-2014" target="_blank">Découpage</a>';
+
+    var map = L.map('map', {maxZoom: 17, minZoom: 11}).setView([43.6, 1.45], 12);
+    // Don't show the 'Powered by Leaflet' text 
+    map.attributionControl.setPrefix(osmAttrib);
+    map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
+
+    L.tileLayer("http://{s}.livembtiles.makina-corpus.net/makina/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
+
+    if (L.Browser.touch) {
+      L.control.touchHover().addTo(map);
+    }
+
+    var current_candidat = location.hash ? location.hash.substr(1) : 'belaubre';
+
+    // console.log(results);
+    var keys = Object.keys(results);
+    for (var key in results) {
+      var bureau_results = results[key];
+      var index;
+      for (index = 0; index < 10; index++) {
+        var candidat = bureau_results[index];
+        for (var name in candidat) {
+
+          if (name === current_candidat) {
+            results[key] = [candidat];
+          }
+        }
+      }
+    }
+
+    // get color depending on the candidate
+
+    var colors = {'belaubre': '#1B2638' /*'#B6A3C9' */, 'chouki': '#C40000', 'cohen': '#e20040', 'laroze': '#1B2638', 'maurice': '#7AB41D', 'moudenc': '#4D6BA2', 'plancade': '#EEA2B0', 'sellin': '#FF0000', 'torremocha': '#9D0000', 'deveyrac': '#8297BE'};
+    var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
+    var partis = {'belaubre': 'RC', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
+    var maxScores = {'belaubre': '5.03', 'chouki': '21.40', 'cohen': '46.94', 'laroze': '18.03', 'maurice': '15.11', 'moudenc': '62.34', 'plancade': '4.79', 'sellin': '10.29', 'torremocha': '2.48', 'deveyrac': '5.65'};
+    var minScores = {'belaubre': '0.59', 'chouki': '0.20', 'cohen': '17.32', 'laroze': '2.47', 'maurice': '1.61', 'moudenc': '19.50', 'plancade': '0.59', 'sellin': '1.23', 'torremocha': '0', 'deveyrac': '0.48'};
+
+    function getColor(candidat, score1, score2) {
+      if (score1 && score2 && score1 == score2) {
+        return 'white';
+      } else{
+        return colors[candidat];
+      };
+    }
+
+    function getOpacity(candidat, score) {
+      return ((score - minScores[candidat]) / (maxScores[candidat] - minScores[candidat]));
+    }
+
+    function bureauxStyle(feature) {
+      return {
+        color: "lightgrey",
+        weight: 1,
+        opacity: 1,
+        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]], 10000),
+        fillOpacity: getOpacity(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]])
+      };
+    }
+
+    function highlightFeature(e) {
+      var layer = e.target;
+      legend.update(layer.feature.properties);
+      layer.setStyle({
+        weight: 4,
+      });
+    }
+
+    var geojson;
+
+    function resetHighlight(e) {
+      geojson.setStyle(bureauxStyle);
+      legend.update();
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+      });
+    }
+
+    geojson = L.geoJson(bureaux, {
+      style: bureauxStyle,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+
+    var legend = L.control({position: 'topright'});
+
+    legend.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'legend info');
+      this.update();
+      return this._div;
+    };
+
+    legend.update = function (bureau) {
+      if (bureau) {
+        var resultsList = '<ul>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.1;"></canvas> 0 à 1 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.3;"></canvas> 1 à 2 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.5;"></canvas> 2 à 3 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.7;"></canvas> 3 à 4 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.9;"></canvas> 4 à 5 %</li>';
+        for(var key in results[bureau.ASSOCIANT]) {
+          var value = results[bureau.ASSOCIANT][key];
+          resultsList += '<li><canvas id="myCanvas" width="';
+          resultsList += value[Object.keys(value)]*2;
+          resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat) + '; background-color:';
+          resultsList += getColor(current_candidat);
+          resultsList += '; opacity: 0.6;"></canvas> ';
+          resultsList += fullNames[Object.keys(value)];
+          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
+          resultsList += value[Object.keys(value)];
+          resultsList += '%</li>';
+        };
+        resultsList += '</ul>';
+        this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
+      } else{
+        var resultsList = '<ul>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.1;"></canvas> 0 à 1 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.3;"></canvas> 1 à 2 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.5;"></canvas> 2 à 3 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.7;"></canvas> 3 à 4 %</li>';
+        resultsList += '<li><canvas width="30" height="20" style="border: 1px solid ' + getColor(current_candidat) + '; background-color: ' + getColor(current_candidat) + '; opacity: 0.9;"></canvas> 4 à 5 %</li>';
+        for(var key in resultsG1) {
+          var value = resultsG1[key];
+          if (Object.keys(value) == current_candidat) {
+            resultsList += '<li><canvas id="myCanvas" width="';
+            resultsList += value[Object.keys(value)]*2;
+            resultsList += '" height="20" style="border:1px solid ' + getColor(current_candidat) + '; background-color:';
+            resultsList += getColor(current_candidat);
+            resultsList += '; opacity: 0.6;"></canvas> ';
+            resultsList += fullNames[Object.keys(value)];
+            resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
+            resultsList += value[Object.keys(value)];
+            resultsList += '%</li>';
+          }
+        };
+        resultsList += '</ul>';
+        this._div.innerHTML = '<h3>Résultats à Toulouse</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+      };
+    };
+
+    legend.addTo(map);
+
+    var select = document.getElementById("select-candidate");
+
+  </script>
+</body>
+</html>
