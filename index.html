@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
 
+  <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
   <style>
 
     html, body {
@@ -246,13 +248,26 @@
       return this._div;
     };
 
+    function animateBars(dataList) {
+
+      for (var i=0; i<dataList.length; i++) {
+        var idList = '#list-' + i;
+
+        var value = dataList[i].toString() + 'px';
+        if ($(idList).length != 0) {
+          $(idList).animate({'width': value}, 'slow');
+        }
+      }
+    }
+
     legend.update = function (bureau) {
       if (bureau) {
         var resultsList = '<ul>';
+        var dataList = [];
         for(var key in results[bureau.ASSOCIANT]) {
           var value = results[bureau.ASSOCIANT][key];
-          resultsList += '<li><canvas class="bar" width="';
-          resultsList += value[Object.keys(value)]*2;
+          resultsList += '<li>';
+          resultsList += '<canvas id="list-'+ key + '" class="bar" width="0"';
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.6;"></canvas> ';
@@ -260,9 +275,12 @@
           resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
           resultsList += '%</li>';
+
+          dataList.push(value[Object.keys(value)]*2);
         };
         resultsList += '<ul>';
         this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
+        animateBars(dataList);
       } else{
         var resultsList = '<ul>';
         for(var key in resultsG1) {
@@ -278,7 +296,7 @@
           resultsList += '%</li>';
         };
         resultsList += '<ul>';
-        this._div.innerHTML = '<h3>Résultats à Toulouse</h3>' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+        this._div.innerHTML = '<h3>Résultats à Toulouse</h3>' + '<div>Survolez un bureau de vote pour plus de détails</div>' + resultsList;
       };
     };
 
