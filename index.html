@@ -81,6 +81,12 @@
       background: #888;
     }
 
+    .parti-result {
+      display: inline-block;
+      vertical-align: top;
+      padding-top: 2px;
+    }
+
     @media screen and (max-width: 1080px) {
       #title2 {
         font-size: 1em;
@@ -271,10 +277,10 @@
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.6;"></canvas> ';
-          resultsList += fullNames[Object.keys(value)];
+          resultsList += '<div class="parti-result"><span class="fullname">' + fullNames[Object.keys(value)] + '</span>';
           resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
-          resultsList += '%</li>';
+          resultsList += '%</div></li>';
 
           dataList.push(value[Object.keys(value)]*2);
         };
@@ -290,10 +296,10 @@
           resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           resultsList += colors[Object.keys(value)];
           resultsList += '; opacity: 0.6;"></canvas> ';
-          resultsList += fullNames[Object.keys(value)];
-          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
+          resultsList += '<div class="parti-result"><span class="fullname">' + fullNames[Object.keys(value)];
+          resultsList += '</span><span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           resultsList += value[Object.keys(value)];
-          resultsList += '%</li>';
+          resultsList += '%</div></li>';
         };
         resultsList += '<ul>';
         this._div.innerHTML = '<h3>Résultats à Toulouse</h3>' + '<div>Survolez un bureau de vote pour plus de détails</div>' + resultsList;
