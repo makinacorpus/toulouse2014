@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
 
+  <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
   <style>
 
     html, body {
@@ -245,14 +247,26 @@
       return this._div;
     };
 
+    function animateBars(dataList) {
+
+      for (var i=0; i<dataList.length; i++) {
+        var idList = '#list-' + i;
+
+        var value = dataList[i].toString() + 'px';
+        if ($(idList).length != 0) {
+          $(idList).animate({'width': value}, 'slow');
+        }
+      }
+    }
+
     legend.update = function (bureau) {
       if (bureau) {
         var results2List = '<ul>';
+        var dataList = [];
         for(var key in results2[bureau.ASSOCIANT]) {
           var value = results2[bureau.ASSOCIANT][key];
-          console.log(value);
-          results2List += '<li><canvas class="bar" width="';
-          results2List += value[Object.keys(value)]*2;
+          results2List += '<li>';
+          results2List += '<canvas id="list-'+ key + '" class="bar" width="0"';
           results2List += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
           results2List += colors[Object.keys(value)];
           results2List += '; opacity: 0.6;"></canvas> ';
@@ -260,9 +274,11 @@
           results2List += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
           results2List += value[Object.keys(value)];
           results2List += '%</li>';
+          dataList.push(value[Object.keys(value)]*2);
         };
         results2List += '<ul>';
         this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + results2List;
+        animateBars(dataList);
       } else{
         var results2List = '<ul>';
         for(var key in resultsG2) {
@@ -278,7 +294,7 @@
           results2List += '%</li>';
         };
         results2List += '<ul>';
-        this._div.innerHTML = '<h3>Résultats à Toulouse</h3><br />' + 'Survolez un bureau de vote pour plus de détails' + results2List;
+        this._div.innerHTML = '<h3>Résultats à Toulouse</h3><br />' + '<div>Survolez un bureau de vote pour plus de détails</div>' + results2List;
       };
     };
 
