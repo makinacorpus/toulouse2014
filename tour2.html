@@ -157,9 +157,8 @@
 <body>
   <div id="header">
     <a href="http://www.makina-corpus.com" target="_blank"><img id="logo" src="http://depot.makina-corpus.org/public/logo.gif"></a>
-    <h1 id="title">Élections municipales 2014 à Toulouse - Premier tour</h1>
+    <h1 id="title">Élections municipales 2014 à Toulouse - Deuxième tour</h1>
     <h3 id="title2">Résultats par bureau de vote - la couleur affichée est celle du candidat arrivé en tête.</h3>
-    <a href="by-candidate.html">Carte par candidat</a>
   </div>
   <div id="map"></div>
   <div id="footer">
@@ -170,8 +169,8 @@
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
-  <script type="text/javascript" src="resultats_bureaux_1.json"></script>
-  <script type="text/javascript" src="resultatsG1.json"></script>
+  <script type="text/javascript" src="resultats_bureaux_2.json"></script>
+  <script type="text/javascript" src="resultatsG2.json"></script>
   <script type="text/javascript">
 
     var osmAttrib='Par <a href="http://www.makina-corpus.com" target="_blank">Makina Corpus</a> | <a href="https://github.com/makinacorpus/toulouse2014/tree/gh-pages" target="_blank">Code</a> | <a href="http://rbv.toulouse.fr/resultats/resultats.php" target="_blank">Données électorales</a> | <a href="http://data.toulouse-metropole.fr/les-donnees/-/opendata/card/24401-bureaux-de-vote-decoupage-effectif-au-1er-mars-2014" target="_blank">Découpage</a>';
@@ -191,7 +190,7 @@
 
     var colors = {'belaubre': '#B6A3C9', 'chouki': '#C40000', 'cohen': '#e20040', 'laroze': '#1B2638', 'maurice': '#7AB41D', 'moudenc': '#4D6BA2', 'plancade': '#EEA2B0', 'sellin': '#FF0000', 'torremocha': '#9D0000', 'deveyrac': '#8297BE'};
     var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
-    var partis = {'belaubre': 'RC', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
+    var partis = {'belaubre': 'RC', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG - EELV', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
 
     function getColor(candidat, score1, score2) {
       if (score1 == score2) {
@@ -206,7 +205,7 @@
         color: "lightgrey",
         weight: 1,
         opacity: 1,
-        fillColor: getColor(Object.keys(results[feature.properties.ASSOCIANT][0])[0], results[feature.properties.ASSOCIANT][0][Object.keys(results[feature.properties.ASSOCIANT][0])[0]], results[feature.properties.ASSOCIANT][1][Object.keys(results[feature.properties.ASSOCIANT][1])[0]]),
+        fillColor: getColor(Object.keys(results2[feature.properties.ASSOCIANT][0])[0], results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]]),
         fillOpacity: 0.6
       };
     }
@@ -248,37 +247,38 @@
 
     legend.update = function (bureau) {
       if (bureau) {
-        var resultsList = '<ul>';
-        for(var key in results[bureau.ASSOCIANT]) {
-          var value = results[bureau.ASSOCIANT][key];
-          resultsList += '<li><canvas class="bar" width="';
-          resultsList += value[Object.keys(value)]*2;
-          resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
-          resultsList += colors[Object.keys(value)];
-          resultsList += '; opacity: 0.6;"></canvas> ';
-          resultsList += fullNames[Object.keys(value)];
-          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
-          resultsList += value[Object.keys(value)];
-          resultsList += '%</li>';
+        var results2List = '<ul>';
+        for(var key in results2[bureau.ASSOCIANT]) {
+          var value = results2[bureau.ASSOCIANT][key];
+          console.log(value);
+          results2List += '<li><canvas class="bar" width="';
+          results2List += value[Object.keys(value)]*2;
+          results2List += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
+          results2List += colors[Object.keys(value)];
+          results2List += '; opacity: 0.6;"></canvas> ';
+          results2List += fullNames[Object.keys(value)];
+          results2List += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
+          results2List += value[Object.keys(value)];
+          results2List += '%</li>';
         };
-        resultsList += '<ul>';
-        this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + resultsList;
+        results2List += '<ul>';
+        this._div.innerHTML = '<b>' + bureau.NOM + '</b> (n°'+ bureau.ASSOCIANT.replace(/^0+/, '') + ')<br />' + results2List;
       } else{
-        var resultsList = '<ul>';
-        for(var key in resultsG1) {
-          var value = resultsG1[key];
-          resultsList += '<li><canvas class="bar" width="';
-          resultsList += value[Object.keys(value)]*2;
-          resultsList += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
-          resultsList += colors[Object.keys(value)];
-          resultsList += '; opacity: 0.6;"></canvas> ';
-          resultsList += fullNames[Object.keys(value)];
-          resultsList += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
-          resultsList += value[Object.keys(value)];
-          resultsList += '%</li>';
+        var results2List = '<ul>';
+        for(var key in resultsG2) {
+          var value = resultsG2[key];
+          results2List += '<li><canvas class="bar" width="';
+          results2List += value[Object.keys(value)]*2;
+          results2List += '" height="20" style="border:1px solid ' + colors[Object.keys(value)] + '; background-color:';
+          results2List += colors[Object.keys(value)];
+          results2List += '; opacity: 0.6;"></canvas> ';
+          results2List += fullNames[Object.keys(value)];
+          results2List += '<span class="parti"> (' + partis[Object.keys(value)] + ')</span> : ';
+          results2List += value[Object.keys(value)];
+          results2List += '%</li>';
         };
-        resultsList += '<ul>';
-        this._div.innerHTML = '<h3>Résultats à Toulouse</h3><br />' + 'Survolez un bureau de vote pour plus de détails' + resultsList;
+        results2List += '<ul>';
+        this._div.innerHTML = '<h3>Résultats à Toulouse</h3><br />' + 'Survolez un bureau de vote pour plus de détails' + results2List;
       };
     };
 
