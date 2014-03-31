@@ -203,13 +203,19 @@
       };
     }
 
+    function getOpacity(score1, score2) {
+      var difference = score1 - score2;
+      return (difference / 35);
+    }
+
     function bureauxStyle(feature) {
       return {
         color: "lightgrey",
         weight: 1,
         opacity: 1,
         fillColor: getColor(Object.keys(results2[feature.properties.ASSOCIANT][0])[0], results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]]),
-        fillOpacity: 0.6
+        // fillOpacity: 0.6
+        fillOpacity: getOpacity(results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]])
       };
     }
 
