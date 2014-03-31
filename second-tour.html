@@ -171,6 +171,7 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="Control.TouchHover.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/chroma-js/0.5.2/chroma.min.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
   <script type="text/javascript" src="resultats_bureaux_2.json"></script>
   <script type="text/javascript" src="resultatsG2.json"></script>
@@ -195,17 +196,18 @@
     var fullNames = {'belaubre': 'Elisabeth Belaubre', 'chouki': 'Ahmed Chouki', 'cohen': 'Pierre Cohen', 'laroze': 'Serge Laroze', 'maurice': 'Antoine Maurice', 'moudenc': 'Jean-Luc Moudenc', 'plancade': 'Jean-Pierre Plancade', 'sellin': 'Jean-Christophe Sellin', 'torremocha': 'Sandra Torremocha', 'deveyrac': 'Christine de Veyrac'};
     var partis = {'belaubre': 'RC', 'chouki': 'EXG', 'cohen': 'PS - PC - PRG - EELV', 'laroze': 'FN', 'maurice': 'EELV', 'moudenc': 'UMP - MoDem - UDI', 'plancade': 'DVG', 'sellin': 'PG', 'torremocha': 'LO', 'deveyrac': 'DVD'};
 
+    function getColorRate(candidat, rate) {
+      scale = chroma.scale(['white', chroma(colors[candidat]).saturate(50)]);
+      var color = scale(rate).darken(rate*20).hex();
+      return color;
+    }
+
     function getColor(candidat, score1, score2) {
       if (score1 == score2) {
         return 'white';
       } else{
-        return colors[candidat];
+        return getColorRate(candidat, ((score1 - score2) / 47));
       };
-    }
-
-    function getOpacity(score1, score2) {
-      var difference = score1 - score2;
-      return (difference / 35);
     }
 
     function bureauxStyle(feature) {
@@ -214,8 +216,8 @@
         weight: 1,
         opacity: 1,
         fillColor: getColor(Object.keys(results2[feature.properties.ASSOCIANT][0])[0], results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]]),
-        // fillOpacity: 0.6
-        fillOpacity: getOpacity(results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]])
+        fillOpacity: 0.6
+        // fillOpacity: getOpacity(results2[feature.properties.ASSOCIANT][0][Object.keys(results2[feature.properties.ASSOCIANT][0])[0]], results2[feature.properties.ASSOCIANT][1][Object.keys(results2[feature.properties.ASSOCIANT][1])[0]])
       };
     }
 
