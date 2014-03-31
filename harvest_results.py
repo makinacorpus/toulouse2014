@@ -28,7 +28,9 @@ OfficeResults = namedtuple(
     'name, associant, ' + ' ,'.join(candidates))
 #HARVEST_URL = "http://rbv.toulouse.fr/resultats/resultats_par_bureau_vote.php"
 HARVEST_URL = "http://rbv.toulouse.fr/resultats/ws_resultats_bv.php"
+
 SCRUTIN = "7"
+SCRUTIN_2 = "8"
 
 harvest_order = ['']
 
@@ -68,11 +70,11 @@ if __name__ == '__main__':
             formatted_associant = row.associant.rjust(5, '0')
 
             msg = 'Requesting URL : {url}'.format(
-                url="/".join([HARVEST_URL, SCRUTIN, formatted_associant]))
+                url="/".join([HARVEST_URL, SCRUTIN_2, formatted_associant]))
             print(msg)
             response = requests.get(
                 HARVEST_URL,
-                params={'scrutin': SCRUTIN, 'idNumBV3': formatted_associant})
+                params={'scrutin': SCRUTIN_2, 'idNumBV3': formatted_associant})
 
             json_content[row.associant] = json.loads(response.content)
 
