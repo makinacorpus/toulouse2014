@@ -186,7 +186,7 @@
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
-    L.tileLayer("http://{s}-tilestream.makina-corpus.net/v2/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
+    L.tileLayer("//{s}-tilestream.makina-corpus.net/v2/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
 
     if (L.Browser.touch) {
       L.control.touchHover().addTo(map);
