@@ -6,7 +6,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link rel="stylesheet" href="//unpkg.com/leaflet@0.7.2/dist/leaflet.css" />
   <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
 
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -171,7 +171,7 @@
     N'hésitez pas à nous contacter pour votre ville ou pour d'autres projets : <a href="mailto:sig@makina-corpus.com">sig@makina-corpus.com</a>
   </div>
 
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script src="//unpkg.com/leaflet@0.7.2/dist/leaflet.css"></script>
 <!--   <script type="text/javascript" src="http://d3js.org/d3.v2.js"></script> -->
   <script type="text/javascript" src="Control.TouchHover.js"></script>
   <script type="text/javascript" src="bureaux.geojson"></script>
@@ -186,7 +186,7 @@
     map.attributionControl.setPrefix(osmAttrib);
     map.setMaxBounds(new L.LatLngBounds(new L.LatLng(43.5,1.18),new L.LatLng(43.77,1.64)));
 
-    L.tileLayer("http://{s}_tilestream.makina-corpus.net/v2/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
+    L.tileLayer("http://{s}-tilestream.makina-corpus.net/v2/toulouse-desaturate/{z}/{x}/{y}.png",{attribution:'&copy; Contributeurs <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a>'}).addTo(map)
 
     if (L.Browser.touch) {
       L.control.touchHover().addTo(map);
